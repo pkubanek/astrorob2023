@@ -1,0 +1,133 @@
+\documentclass[proceedings, preprint]{rmaa}
+
+% The preprint option sets the first page header to contain the name
+% of the conference. It will be ignored when typesetting the final
+% volume. 
+
+%%%
+%%% Load any optional packages you need here with \usepackage
+%%% 
+
+% This allows compact, in-paragraph, and as-paragraph  versions of the
+% standard itemize and enumerate environments. 
+\usepackage{paralist}
+
+% These are used in one of the graphics examples
+\usepackage{psfrag,color}
+
+%%%
+%%% Define any personal macros here
+%%% 
+
+% These are some I use in typesetting example code
+\newcommand{\bs}{\textbackslash}
+\newcommand{\CS}[1]{\texttt{\textbackslash #1}}
+\newenvironment{Example}
+{\begin{list}{}{\setlength{\leftmargin}{5pt}\setlength{\rightmargin}{5pt}}\item[]}
+  {\end{list}}
+
+  
+%%%
+%%% Article preamble commands (title, authors, abstract, etc.) 
+%%% None of these produce any output themselves, they just set things 
+%%% up for \maketitle
+%%%
+
+% This is only used for making the header for the preprint version
+\SetYear{2023}
+\SetConfTitle{Astrorob 2023i Proceedings}
+
+% Please use mixed case here, since this title gets propagated onto
+% the web page, ADS entry, etc. 
+\title{LSST Control System and Synergies Between LSST and Small Observatories} 
+
+% For the conference proceedings, the author affiliations should be
+% subscripted, using \altaffil and/or \altaffilmark + \altaffiltext
+% Note that \altaffilmark goes after a comma and that `and' is spelt
+% out.
+\author{
+  P. Kub\'anek,\altaffilmark{1} 
+}
+
+% Note that \altaffil, \altaffilmark go inside the scope of the
+% \author{...} command but \altaffiltext is outside it. 
+\altaffiltext{1}{Vera C. Rubin Observatory,
+  1500 Av. Ju\'an Cisternas,
+  170000, La Serena, Chile}
+
+% Authors for running headers - surnames only, et al. if more than 3. 
+\shortauthor{Kub\'anek}
+% Title for running header
+\shorttitle{LSST Control System}
+
+% List of authors used to construct table of contents
+\listofauthors{P. Kub\'anek}
+% Each author in Surname, Initials format, used in generating Author
+% Index entries.
+\indexauthor{Kub\'anek, P.}
+
+% English abstract
+\abstract{This document gives overview of the LSST Control System. The control
+system is set to operate telescopes and facilities of the constructed Vera C.
+Rubin observatory telescope. The system relies heavily on using Kubernetes
+cluster management, running Dockerized containers. Each device is controled by
+a small control daemon, called CSC - Commandable SAL Component (SAL = System
+Access Layer). OpenDDS is used as a communication middleware, enabling CSC
+communication.}
+
+% Spanish abstract - leave blank and it will be translated by the
+% editors. 
+%\resumen{Presentamos los resultados de observaciones a frecuencias
+%  m\'ultiples del proplyd LV~2 (M42~167--317) en la nebulosa de Ori\'on,
+%  concentrando sobre nuestra analis\'\i{}s del ``microjet'' unidireccional
+%  que sale del frente de ionizci\'on del proplyd.}
+
+
+% Keywords must be from the standard list and in alphabetical order. 
+% You should have no more than SIX different keywords. 
+\addkeyword{LSST}
+\addkeyword{Telescope Control System}
+\addkeyword{Vera C. Rubin Observatory}
+
+
+%%%
+%%% Beginning of document proper
+%%%
+\begin{document}
+% Typeset article header
+\maketitle
+
+
+\section{Introduction}
+\label{sec:intro}
+
+The Vera C. Rubin Observatory is an observatory dedicated to southern full sky
+survey. It is part of the LSST\cite{2019lsst} project, which includes 8.4m
+primary mirror main telescope, 1.2m auxiliary calbration telescope and a
+networked data centers. It's main camera, boasting 3.2 gigapixel 189 4k x 4k
+CCD sensors should take an image every 15 seconds, surveying the full visible
+portion of the sky every 3 nights.
+
+The observatory control system is completely designed in-house.
+OpenDDS\cite{opendds} was selected as the communication middleware. The
+messages passed through DDS are described in a XML files\cite{salxml}.
+
+\section{M1M3 control software}
+
+The M1M3 control software main task is to ensure M1M3 glass safety. Apart from
+that, it shall control M1M3 movements so its optical surfaces form a perfect
+telescope. The mirror is being supported and actuated by 156 pneumatic
+actuators. Mirror position is steered by 6 linear actuators - hardpoints -
+forming a hexapod.
+
+\begin{thebibliography}
+  \bibitem[Ivezi\v{c}, \v{Z}eljko, et al.(2019)]{2019lsst} "LSST: from science drivers to reference design and anticipated data products." \apj 873.2: 111.
+
+  \bibitem[OpenDDS web site (2024)]{opendds}\url{https://opendds.org/}
+
+  \bibitem[Mills, Dave, German Schumacher, and Paul Lotz (2016)]{salxml}"LSST communications middleware implementation." Ground-based and Airborne Telescopes VI. Vol. 9906. Spie
+
+\end{thebibliography}
+
+
+\end{document}
