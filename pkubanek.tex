@@ -106,13 +106,29 @@ survey. It is part of the LSST\cite{2019lsst} project, which includes 8.4m
 primary mirror main telescope, 1.2m auxiliary calbration telescope and a
 networked data centers. It's main camera, boasting 3.2 gigapixel 189 4k x 4k
 CCD sensors should take an image every 15 seconds, surveying the full visible
-portion of the sky every 3 nights.
+portion of the night sky every 3 nights.
 
 The observatory control system is completely designed in-house.
 OpenDDS\cite{opendds} was selected as the communication middleware. The
 messages passed through DDS are described in a XML files\cite{salxml}.
 
-\section{M1M3 control software}
+\section{Hardware control}
+
+\subsection{ILC - Inner Loop Controller}
+
+The LSST utilizes ILC\cite{2014ilc} - Inner Loop Controller - in vast quantities. Over 500 of
+the boards were manufactured and tested. The custom design of the boards was
+chosen primary for LSST requirement to keep the electronics in the mirror cell
+during its coating in vacuum.
+
+The boards provide a standardized interface set of the digital inputs and
+outputs. A custom firmware is running on the microcontroller.
+
+The ILCs are being commanded from M1M3 controller via a standard RS-485 bus.
+ILC address is provided by a chip residing in power and communication
+connector, so the ILCs can be easily changed if needed.
+
+\subsection{M1M3 control software}
 
 The M1M3 control software main task is to ensure M1M3 glass safety. Apart from
 that, it shall control M1M3 movements so its optical surfaces form a perfect
@@ -120,14 +136,72 @@ telescope. The mirror is being supported and actuated by 156 pneumatic
 actuators. Mirror position is steered by 6 linear actuators - hardpoints -
 forming a hexapod.
 
+Mirror temperature is critical for proper function of the optics. Mirror
+deformations due to different temperatures shall be avoid. For that, the mirror
+is actively cooled using forced air injection system. The air is being cooled
+by glycol heat exchanges, with the extra heat removed outside of the telescope
+building.
+
+\subsection{M1M3 Force actuators}
+
+The force actuators use a ILC, mentioned above. The ILC provides 
+
+\section{EFD - Engineering Facility Database}
+
+All telemetry data acquired on the summit, together with commands send, are
+stored in the Engineering Facility Database - EFD. EFD uses the InfluxDB time
+series database to store data. Chronograf instance is available to visualize
+stored data.
+
+Data retried from the EFD are extensively used during observatory
+commissioning.
+
+\section{System safety}
+
+Safety system is designed as being completely independent from the control
+software. It uses industrial standard safety Programmable Logic Controllers -
+PLCs to implement interlocks pertaining throughout the observatory. The
+interlocks make sure equipment is stopped as soon as any, either internal or
+external (earthquakes) events happen.
+
+\section{Synergies between LSST and small observatories}
+
+LSST shall detect about 10 millions transients per night, that's about 10
+thousand per visit\cite{lsstdata}. Images shall be processed and transient information
+available within 60 seconds after images are acquired.
+
+The transient data are pre-filtered by community developed and managed
+brokers\cite{databrokers}. Independent observatories shall use broker provided
+services to select triggers they shall follow. Brokers add context to the
+detection - catalogue cross-matches, suitability for observations.
+
+\subsection{Observatory ecosystem}
+
+LSST takes and process data. It's assumed to be community responsibility to
+provide follow-up observations.
+
+Due to short exposure, large collecting area and unique CCD design (high full
+well depth), the magnitude range of the transients is suitable for small
+telescopes (from ~6). Follow-up observations, providing more detailed light
+curve, will be crucial.
+
+Spectroscopic evolution of the sources will be interesting as well. Of course,
+large diameter telescopes will be better for spectroscopy.
+
+
 \begin{thebibliography}
-  \bibitem[Ivezi\v{c}, \v{Z}eljko, et al.(2019)]{2019lsst} "LSST: from science drivers to reference design and anticipated data products." \apj 873.2: 111.
+	\bibitem[\v{Z}eljko, I. et al.(2019)]{2019lsst} "LSST: from science drivers to reference design and anticipated data products." \apj 873.2: 111.
 
   \bibitem[OpenDDS web site (2024)]{opendds}\url{https://opendds.org/}
 
-  \bibitem[Mills, Dave, German Schumacher, and Paul Lotz (2016)]{salxml}"LSST communications middleware implementation." Ground-based and Airborne Telescopes VI. Vol. 9906. Spie
+  \bibitem[LSST Data Products Definition Document(2023)]{lsstdata}LSE-163 \url{https://lse-163.lsst.io/}
+
+  \bibitem[LSST Alert Brokers(2024)]{databrokers}\url{https://www.lsst.org/scientists/alert-brokers}
+
+  \bibitem[Dave, M., Schumacher, G. and Lotz, P.(2016)]{salxml}"LSST communications middleware implementation." Ground-based and Airborne Telescopes VI. Vol. 9906. Spie
+
+  \bibitem[Wiecha, O. and Lotz, P.(2014)]{2014ilc}LSST Inner Loop Controller (ILC) design and characterization, Advances in Optical and Mechanical Technologies for Telescopes and Instrumentation Vol. 9151., Spie
 
 \end{thebibliography}
-
 
 \end{document}

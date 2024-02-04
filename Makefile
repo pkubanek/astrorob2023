@@ -7,6 +7,8 @@ DOTFILES:=
 
 pkubanek.pdf: pkubanek.tex $(DOTFILES)
 	pdflatex $<
+	bibtex pkubanek
+	pdflatex $<
 	pdflatex $<
 
 %.pdf: %.dot
