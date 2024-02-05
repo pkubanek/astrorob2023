@@ -116,10 +116,10 @@ messages passed through DDS are described in a XML files\cite{salxml}.
 
 \subsection{ILC - Inner Loop Controller}
 
-The LSST utilizes ILC\cite{2014ilc} - Inner Loop Controller - in vast quantities. Over 500 of
-the boards were manufactured and tested. The custom design of the boards was
-chosen primary for LSST requirement to keep the electronics in the mirror cell
-during its coating in vacuum.
+The LSST utilizes ILC\cite{2014ilc} - Inner Loop Controller - in vast
+quantities. Over 500 of the boards were manufactured and tested. The custom
+design of the boards was chosen primary for LSST requirement to keep the
+electronics in the mirror cell during its coating in vacuum.
 
 The boards provide a standardized interface set of the digital inputs and
 outputs. A custom firmware is running on the microcontroller.
@@ -144,7 +144,27 @@ building.
 
 \subsection{M1M3 Force actuators}
 
-The force actuators use a ILC, mentioned above. The ILC provides 
+The force actuators use a ILC, mentioned above. The ILC controls valves
+delivering pressurized air to push and pull cylinders. Load cells on top of the
+cylinders, on intreface to the mirror, measure force applied by the cylinder
+and close the control loop.
+
+\subsection{M1M3 cRIO Central controller}
+
+As the central controller, the National Instruments/Emerson cRIO platform was
+chosen. The platform provides a robust and powerful platform, designed
+particularly for data processing.
+
+\subsection{Telescope Mount Assembly}
+
+The telescope mount assembly uses linear electromagnetic drives to control
+telescope azimuth and elevation axis. Those provide torque and control required
+to precisely point the telescope.
+
+As the TMA controller is provided by an external contractor, the provided
+interface is wrapped in the TMA CSC. This is the approach preferred for
+external controllers - the CSC acts to establish the standard interface, allow
+the observatory control software to sends command and collect telemetry.
 
 \section{EFD - Engineering Facility Database}
 
@@ -154,7 +174,8 @@ series database to store data. Chronograf instance is available to visualize
 stored data.
 
 Data retried from the EFD are extensively used during observatory
-commissioning.
+commissioning. The lsst\_efd\_client library is available to facilitate EFD data
+retrieval\cite{lsst_efd}.
 
 \section{System safety}
 
@@ -167,8 +188,8 @@ external (earthquakes) events happen.
 \section{Synergies between LSST and small observatories}
 
 LSST shall detect about 10 millions transients per night, that's about 10
-thousand per visit\cite{lsstdata}. Images shall be processed and transient information
-available within 60 seconds after images are acquired.
+thousand per visit\cite{lsstdata}. Images shall be processed and transient
+information available within 60 seconds after images are acquired.
 
 The transient data are pre-filtered by community developed and managed
 brokers\cite{databrokers}. Independent observatories shall use broker provided
@@ -188,9 +209,8 @@ curve, will be crucial.
 Spectroscopic evolution of the sources will be interesting as well. Of course,
 large diameter telescopes will be better for spectroscopy.
 
-
 \begin{thebibliography}
-	\bibitem[\v{Z}eljko, I. et al.(2019)]{2019lsst} "LSST: from science drivers to reference design and anticipated data products." \apj 873.2: 111.
+  \bibitem[\v{Z}eljko, I. et al.(2019)]{2019lsst} "LSST: from science drivers to reference design and anticipated data products." \apj 873.2: 111.
 
   \bibitem[OpenDDS web site (2024)]{opendds}\url{https://opendds.org/}
 
@@ -201,6 +221,8 @@ large diameter telescopes will be better for spectroscopy.
   \bibitem[Dave, M., Schumacher, G. and Lotz, P.(2016)]{salxml}"LSST communications middleware implementation." Ground-based and Airborne Telescopes VI. Vol. 9906. Spie
 
   \bibitem[Wiecha, O. and Lotz, P.(2014)]{2014ilc}LSST Inner Loop Controller (ILC) design and characterization, Advances in Optical and Mechanical Technologies for Telescopes and Instrumentation Vol. 9151., Spie
+
+  \bibitem[LSST EFD Client(2024)]{lsst_efd}\url{https://efd-client.lsst.io}
 
 \end{thebibliography}
 
